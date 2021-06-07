@@ -102,3 +102,22 @@
 .ant-menu-sub .ant-menu-item:hover {
   padding-left: 51px !important;
 }
+
+.days-header {
+  width: 100px !important;
+  text-align: center;
+}
+
+.days-body {
+  width: 100px !important;
+  height: 100px !important;
+  border: 1px solid black;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+}
+.days-body.before,
+.days-body.after {
+  color: var(--disabled);
+  cursor: unset;
+}
