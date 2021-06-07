@@ -1,0 +1,5 @@
+.ant-btn:focus,
+.button:hover {
+    border: 1px solid #D9D9D9  !important;
+    opacity: 0.85;
+}

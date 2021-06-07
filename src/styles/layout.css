@@ -1,0 +1,104 @@
+:root {
+  --primary: #0275d8;
+  --secondary: #5cb85c;
+  --info: #5bc0de;
+  --warning: #f0ad4e;
+  --danger: #d9534f;
+  --dark: #292b2c;
+  --light: #f7f7f7;
+  --black: #000;
+  --white: #fff;
+  --disabled: #cfcfcf;
+  --transparent: rgba(255, 255, 255, 0.1);
+  --grey1: #707070;
+  --grey2: #cfcfcf;
+  --grey3: #f2f2f2;
+  --grey4: #aeafaf;
+  --grey5: #bbbbbb;
+  --grey6: #e6e6e6;
+  --orange1: #c61b1b;
+  --orange2: #fe912a;
+  --red1: #dd2c2c;
+  --red2: #ed6675;
+  --blue1: #15c6fb;
+  --blue2: #318ebe;
+  --blue3: #0e3546;
+  --blue4: #4d627d;
+  --blue5: #1711c5;
+  --green1: #56cf5b;
+  --green2: #8ef276;
+  --green3: #008200;
+  --yellow1: #f2c121;
+  --menu-selected: #6489ff;
+  --menu-background: #181819;
+}
+
+.ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background-color: #5cb85c !important;
+  border-left: 3px solid #fff;
+}
+
+.ant-menu-inline .ant-menu-item {
+  margin: 0 !important;
+}
+
+.header-title {
+  font-weight: 700;
+  font-size: 25px;
+  margin-bottom: 0 !important;
+}
+
+.ant-picker.ant-picker-disabled .ant-picker-input > input[disabled],
+.ant-input.ant-input-disabled,
+.ant-input-number-disabled .ant-input-number-input,
+.ant-select-disabled .ant-select-selection-item {
+  color: #292b2c !important;
+  font-weight: 600;
+}
+
+.container {
+  box-shadow: 2px 2px 19px -6px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 2px 2px 19px -6px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 2px 19px -6px rgba(0, 0, 0, 0.75);
+}
+
+.text-success {
+  color: #5cb85c;
+  font-weight: 700;
+  margin-bottom: 0px;
+}
+
+.text-danger {
+  color: #d9534f;
+  font-weight: 700;
+  margin-bottom: 0px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+.ant-menu-submenu .ant-menu-submenu-title:hover,
+.ant-menu-item:hover {
+  padding-left: 28px !important;
+}
+.ant-menu-sub .ant-menu-item:hover {
+  padding-left: 51px !important;
+}

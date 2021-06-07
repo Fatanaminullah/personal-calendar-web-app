@@ -1,0 +1,39 @@
+.ant-table-container {
+  padding: 20px 0px !important;
+  border-radius: 10px !important;
+}
+
+.ant-table.ant-table-scroll-horizontal {
+    border-radius: 10px !important;
+}
+
+.ant-pagination {
+    padding: 0 10px !important;
+}
+
+.ant-table-thead > tr > .ant-table-cell,
+.ant-table-thead > tr > .ant-table-cell > div,
+.ant-table-thead > tr > .ant-table-cell > div:hover {
+  background-color: #001529;
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  font-size: 14px;
+}
+
+.ant-table-column-sorter {
+  color: #ffffff !important;
+}
+
+.ant-table-cell {
+  font-size: 14px;
+}
+
+.table-row-light,
+.table-row-light .ant-table-column-sort{
+  background-color: #ffffff;
+}
+.table-row-dark,
+.table-row-dark .ant-table-column-sort{
+  background-color: #f0f2f5;
+}

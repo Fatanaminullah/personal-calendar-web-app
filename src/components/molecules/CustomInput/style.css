@@ -1,0 +1,6 @@
+.border-rounded .ant-select-selector {
+    border-radius: 20px !important;
+}
+.border-normal .ant-select-selector {
+    border-radius: 5px !important;
+}
