@@ -1,13 +1,28 @@
 /* eslint-disable eqeqeq */
 import {
   ClockCircleOutlined,
+  DeleteOutlined,
+  EditOutlined,
   MailFilled,
   MailOutlined,
   MinusCircleOutlined,
+  MoreOutlined,
   PlusCircleFilled,
   PlusOutlined,
 } from '@ant-design/icons';
-import {Col, Form, Input, message, Modal, Row, TimePicker} from 'antd';
+import {
+  Col,
+  Dropdown,
+  Form,
+  Input,
+  Menu,
+  message,
+  Modal,
+  Popconfirm,
+  Row,
+  Space,
+  TimePicker,
+} from 'antd';
 import moment from 'moment';
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -19,33 +34,64 @@ const DashboardPage = () => {
   const dispatch = useDispatch();
   const {events} = useSelector((state) => state.events);
   const [selectedDate, setSelectedDate] = useState(moment().format('D'));
+  const [selectedEvent, setSelectedEvent] = useState({});
+  const [isEditing, setIsEditing] = useState(true);
   const [visibleModal, setVisibleModal] = useState(false);
   const [form] = Form.useForm();
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
   const onFinish = (values) => {
-    if (events[selectedDate].length < 3) {
-      const event = [...events[selectedDate], {...values}];
+    if (!isEditing) {
+      if (events[selectedDate].length < 3) {
+        const event = [...events[selectedDate], {...values}];
+        const request = {
+          ...events,
+          [selectedDate]: event,
+        };
+        dispatch(setEventsData(request));
+        closeModal();
+        message.success('Events Created!');
+      } else {
+        message.error('You have reach your maximum events of a day!');
+      }
+    } else {
+      const event = events[selectedDate].map((item, index) => {
+        if (index === selectedEvent.id) {
+          return {...values};
+        } else {
+          return {...item};
+        }
+      });
       const request = {
         ...events,
         [selectedDate]: event,
       };
       dispatch(setEventsData(request));
       closeModal();
-      message.success('Events Created!');
-    } else {
-      message.error('You have reach your maximum events of a day!');
+      message.success(`Events ${selectedEvent.name} successfully edited!`);
     }
   };
   const closeModal = () => {
     setVisibleModal(false);
+    setSelectedEvent({});
+    setIsEditing(false);
     form.resetFields();
+  };
+  const deleteEvents = (index, name) => {
+    const tempEvents = events[selectedDate];
+    tempEvents.splice(index, 1);
+    const request = {
+      ...events,
+      [selectedDate]: tempEvents,
+    };
+    dispatch(setEventsData(request));
+    message.success(`Events ${name} successfully deleted!`);
   };
   return (
     <>
       <Modal
-        title="Add Events"
+        title={isEditing ? 'Edit Event' : 'Add Event'}
         visible={visibleModal}
         onCancel={() => {
           closeModal();
@@ -62,7 +108,7 @@ const DashboardPage = () => {
         <Form
           form={form}
           name="events-form"
-          initialValues={{}}
+          // initialValues={{}}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}>
           <Form.Item
@@ -75,6 +121,7 @@ const DashboardPage = () => {
                 message: 'Field Required',
               },
             ]}
+            shouldUpdate
             labelAlign="left">
             <Input style={{borderRadius: 5}} />
           </Form.Item>
@@ -89,6 +136,7 @@ const DashboardPage = () => {
                 message: 'Field Required',
               },
             ]}
+            shouldUpdate
             labelAlign="left">
             <TimePicker.RangePicker style={{width: '100%', borderRadius: 5}} />
           </Form.Item>
@@ -104,7 +152,8 @@ const DashboardPage = () => {
                 required: true,
                 message: 'Field Required',
               },
-            ]}>
+            ]}
+            shouldUpdate>
             {(fields, {add, remove}, {errors}) => (
               <>
                 {fields.map((field) => {
@@ -238,7 +287,7 @@ const DashboardPage = () => {
                     />
                   </div>
                 ) : (
-                  events[selectedDate].map((item) => (
+                  events[selectedDate].map((item, index) => (
                     <div
                       style={{
                         backgroundColor: colors.white,
@@ -252,14 +301,75 @@ const DashboardPage = () => {
                           '0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19)',
                         marginBottom: 10,
                       }}>
-                      <p
+                      <div
                         style={{
-                          fontWeight: 700,
-                          fontSize: 16,
-                          textAlign: 'left',
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
                         }}>
-                        {item.name}
-                      </p>
+                        <p
+                          style={{
+                            fontWeight: 700,
+                            fontSize: 16,
+                            textAlign: 'left',
+                          }}>
+                          {item.name}
+                        </p>
+                        <Dropdown
+                          arrow
+                          placement="bottomRight"
+                          trigger={['click']}
+                          overlay={
+                            <Menu>
+                              <Menu.Item
+                                onClick={() => {
+                                  setSelectedEvent({
+                                    ...item,
+                                    id: index,
+                                    time: item.time.map((x) => moment(x)),
+                                  });
+                                  setIsEditing(true);
+                                  setVisibleModal(true);
+                                  form.setFieldsValue({
+                                    ...item,
+                                    id: index,
+                                    time: item.time.map((x) => moment(x)),
+                                  });
+                                }}>
+                                <Space
+                                  align="center"
+                                  style={{
+                                    cursor: 'pointer',
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                  }}>
+                                  <EditOutlined />
+                                  <p style={{marginBottom: 0}}>Edit</p>
+                                </Space>
+                              </Menu.Item>
+                              <Menu.Item>
+                                <Popconfirm
+                                  title="Are you sure to delete this event?"
+                                  onConfirm={() =>
+                                    deleteEvents(index, item.name)
+                                  }
+                                  okText="Yes"
+                                  cancelText="No">
+                                  <Space
+                                    align="center"
+                                    style={{cursor: 'pointer'}}>
+                                    <DeleteOutlined />
+                                    <p style={{marginBottom: 0}}>Delete</p>
+                                  </Space>
+                                </Popconfirm>
+                              </Menu.Item>
+                            </Menu>
+                          }>
+                          <MoreOutlined
+                            style={{cursor: 'pointer', height: 15}}
+                          />
+                        </Dropdown>
+                      </div>
                       <p
                         style={{
                           fontSize: 12,
