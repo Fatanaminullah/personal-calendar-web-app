@@ -3,39 +3,24 @@ import {
   ClockCircleOutlined,
   DeleteOutlined,
   EditOutlined,
-  MailFilled,
   MailOutlined,
-  MinusCircleOutlined,
   MoreOutlined,
   PlusCircleFilled,
-  PlusOutlined,
 } from '@ant-design/icons';
-import {
-  Col,
-  Dropdown,
-  Form,
-  Input,
-  Menu,
-  message,
-  Modal,
-  Popconfirm,
-  Row,
-  Space,
-  TimePicker,
-} from 'antd';
+import {Col, Dropdown, Form, Menu, message, Popconfirm, Row, Space} from 'antd';
 import moment from 'moment';
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Button, Calendar} from '../../components';
+import {Button, Calendar, EventFormModal} from '../../components';
 import {setEventsData} from '../../redux/store/actions/events';
-import {colors} from '../../utilities';
+import {colors, generateRandomColor} from '../../utilities';
 
 const DashboardPage = () => {
   const dispatch = useDispatch();
   const {events} = useSelector((state) => state.events);
   const [selectedDate, setSelectedDate] = useState(moment().format('D'));
   const [selectedEvent, setSelectedEvent] = useState({});
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const [form] = Form.useForm();
   const onFinishFailed = (errorInfo) => {
@@ -44,7 +29,10 @@ const DashboardPage = () => {
   const onFinish = (values) => {
     if (!isEditing) {
       if (events[selectedDate].length < 3) {
-        const event = [...events[selectedDate], {...values}];
+        const event = [
+          ...events[selectedDate],
+          {...values, color: generateRandomColor()},
+        ];
         const request = {
           ...events,
           [selectedDate]: event,
@@ -88,135 +76,17 @@ const DashboardPage = () => {
     dispatch(setEventsData(request));
     message.success(`Events ${name} successfully deleted!`);
   };
+
   return (
     <>
-      <Modal
-        title={isEditing ? 'Edit Event' : 'Add Event'}
-        visible={visibleModal}
-        onCancel={() => {
-          closeModal();
-        }}
-        footer={[
-          <Button
-            text="Cancel"
-            type="light"
-            onClick={() => {
-              closeModal();
-            }}
-          />,
-        ]}>
-        <Form
-          form={form}
-          name="events-form"
-          // initialValues={{}}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}>
-          <Form.Item
-            name="name"
-            label="Name"
-            labelCol={{span: 6}}
-            rules={[
-              {
-                required: true,
-                message: 'Field Required',
-              },
-            ]}
-            shouldUpdate
-            labelAlign="left">
-            <Input style={{borderRadius: 5}} />
-          </Form.Item>
-          <Form.Item
-            name="time"
-            label="Time"
-            style={{width: '100%'}}
-            labelCol={{span: 6}}
-            rules={[
-              {
-                required: true,
-                message: 'Field Required',
-              },
-            ]}
-            shouldUpdate
-            labelAlign="left">
-            <TimePicker.RangePicker style={{width: '100%', borderRadius: 5}} />
-          </Form.Item>
-          <Row>
-            <Col span={6}>
-              <label className="label-required">Invitees</label>
-            </Col>
-          </Row>
-          <Form.List
-            name="invitees"
-            rules={[
-              {
-                required: true,
-                message: 'Field Required',
-              },
-            ]}
-            shouldUpdate>
-            {(fields, {add, remove}, {errors}) => (
-              <>
-                {fields.map((field) => {
-                  return (
-                    <Row>
-                      <Col span={6} />
-                      <Col span={17}>
-                        <Form.Item
-                          {...field}
-                          rules={[
-                            {
-                              required: true,
-                              message: 'Field Required',
-                            },
-                            {
-                              type: 'email',
-                              message: 'Incorrect email format',
-                            },
-                          ]}
-                          name={[field.name, 'email']}
-                          fieldKey={[field.fieldKey, 'email']}>
-                          <Input style={{borderRadius: 5}} />
-                        </Form.Item>
-                      </Col>
-                      <Col
-                        span={1}
-                        style={{
-                          padding: 5,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
-                        <MinusCircleOutlined
-                          style={{fontSize: 16}}
-                          onClick={() => remove(field.name)}
-                        />
-                      </Col>
-                    </Row>
-                  );
-                })}
-                <Col offset={6} span={18}>
-                  <Form.ErrorList errors={errors} />
-                </Col>
-                <Col offset={6} span={18}>
-                  <Form.Item>
-                    <Button
-                      dashed
-                      size="medium"
-                      type="light"
-                      text="Add Field"
-                      onClick={() => add()}
-                      block
-                      icon={<PlusOutlined />}
-                    />
-                  </Form.Item>
-                </Col>
-              </>
-            )}
-          </Form.List>
-          <Form.Item>
-            <Button text="Submit" block type="primary" htmlType="submit" />
-          </Form.Item>
-        </Form>
-      </Modal>
+      <EventFormModal
+        visibleModal={visibleModal}
+        closeModal={closeModal}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        isEditing={isEditing}
+        form={form}
+      />
       <Row>
         <Col
           span={24}
@@ -250,6 +120,7 @@ const DashboardPage = () => {
                 <Calendar
                   selectedDate={selectedDate}
                   setSelectedDate={setSelectedDate}
+                  events={events}
                 />
               </Col>
               <Col xs={24} md={24} lg={10}>
@@ -277,6 +148,7 @@ const DashboardPage = () => {
                       justifyContent: 'center',
                       flexDirection: 'column',
                       height: '80%',
+                      minHeight: 300,
                     }}>
                     <p style={{fontSize: 16}}>No events created</p>
                     <Button
@@ -290,7 +162,7 @@ const DashboardPage = () => {
                   events[selectedDate].map((item, index) => (
                     <div
                       style={{
-                        backgroundColor: colors.white,
+                        backgroundColor: item.color,
                         borderRadius: 5,
                         padding: 15,
                         display: 'flex',
