@@ -88,56 +88,40 @@ const DashboardPage = () => {
         form={form}
       />
       <Row>
-        <Col
-          span={24}
-          style={{
-            width: '100%',
-            justifyContent: 'center',
-            textAlign: 'center',
-            flexDirection: 'column',
-            alignItems: 'center',
-            display: 'flex',
-            padding: 20,
-          }}>
+        <Col span={24} className="container">
           <h1 style={{margin: '10px 0'}}>Your Personal Calendar</h1>
-          <div
-            style={{
-              backgroundColor: colors.white,
-              borderRadius: 10,
-              alignSelf: 'center',
-              padding: 35,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column',
-              width: '90%',
-              boxShadow:
-                '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-              textAlign: 'center',
-            }}>
-            <Row style={{width: '100%'}}>
-              <Col xs={24} md={24} lg={14}>
+          <div className="calendar-container">
+            <Row style={{width: '100%'}} justify="space-between">
+              <Col xs={24} md={24} lg={14} xl={14}>
                 <Calendar
                   selectedDate={selectedDate}
                   setSelectedDate={setSelectedDate}
                   events={events}
                 />
               </Col>
-              <Col xs={24} md={24} lg={10}>
-                <Row
-                  justify={
-                    events[selectedDate].length ? 'space-between' : 'center'
-                  }
-                  style={{padding: 10}}>
-                  <h2 style={{margin: '10px 0'}}>Events</h2>
-                  {events[selectedDate].length ? (
-                    <Button
-                      icon={<PlusCircleFilled />}
-                      type="secondary-outlined"
-                      text="Add Events"
-                      onClick={() => setVisibleModal(true)}
-                    />
-                  ) : null}
+              <Col xs={24} md={24} lg={9} xl={10}>
+                <Row justify="space-between" style={{padding: 10}}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <h2 style={{margin: '0 5px 0 0'}}>Events</h2>
+                    <p style={{marginBottom: 0}}>
+                      {selectedDate} {moment().format('MMM YYYY')}
+                    </p>{' '}
+                  </div>
+                  <div>
+                    {events[selectedDate].length ? (
+                      <Button
+                        icon={<PlusCircleFilled />}
+                        type="secondary-outlined"
+                        text="Add Events"
+                        onClick={() => setVisibleModal(true)}
+                      />
+                    ) : null}
+                  </div>
                 </Row>
                 {!events[selectedDate].length ? (
                   <div

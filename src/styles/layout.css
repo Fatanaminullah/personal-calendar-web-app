@@ -56,12 +56,6 @@
   font-weight: 600;
 }
 
-.container {
-  box-shadow: 2px 2px 19px -6px rgba(0, 0, 0, 0.75);
-  -webkit-box-shadow: 2px 2px 19px -6px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 2px 2px 19px -6px rgba(0, 0, 0, 0.75);
-}
-
 .text-success {
   color: #5cb85c;
   font-weight: 700;
@@ -103,6 +97,30 @@
   padding-left: 51px !important;
 }
 
+.container {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  padding: 20px;
+}
+
+.calendar-container {
+  background-color: white;
+  border-radius: 10px;
+  align-self: center;
+  padding: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;
+}
+
 .days-header {
   width: 100px !important;
   text-align: center;
@@ -141,4 +159,24 @@
   font-family: SimSun, sans-serif;
   line-height: 1;
   content: '*';
+}
+
+@media screen and (max-width: 768px) {
+  .calendar-container {
+    padding: 10px;
+  }
+  .container {
+    padding: 10px;
+  }
+  .days-body {
+    height: 50px;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .calendar-container {
+    padding: 10px;
+  }
+  .days-body {
+    height: 75px;
+  }
 }

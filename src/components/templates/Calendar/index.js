@@ -90,7 +90,8 @@ const Calendar = ({selectedDate, setSelectedDate, events}) => {
   };
   return (
     <>
-      <table>
+      <h2>{moment().format('MMMM')}</h2>
+      <table style={{width: '95%'}}>
         <thead>
           <tr>{daysHeader()}</tr>
         </thead>
