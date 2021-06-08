@@ -13,7 +13,7 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Button, Calendar, EventFormModal} from '../../components';
 import {setEventsData} from '../../redux/store/actions/events';
-import {colors, generateRandomColor} from '../../utilities';
+const randomColor = require('randomcolor');
 
 const DashboardPage = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,9 @@ const DashboardPage = () => {
       if (events[selectedDate].length < 3) {
         const event = [
           ...events[selectedDate],
-          {...values, color: generateRandomColor()},
+          {...values, color: randomColor({
+            luminosity: 'light'
+          })},
         ];
         const request = {
           ...events,
