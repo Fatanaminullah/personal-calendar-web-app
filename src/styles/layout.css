@@ -109,15 +109,36 @@
 }
 
 .days-body {
-  width: 100px !important;
-  height: 100px !important;
+  height: 100px;
   border: 1px solid black;
   font-weight: 700;
   text-align: center;
   cursor: pointer;
 }
+.days-body.today {
+  color: var(--primary);
+}
+.days-body.selected {
+  border: 3px solid var(--primary);
+}
 .days-body.before,
 .days-body.after {
   color: var(--disabled);
   cursor: unset;
+}
+
+.label-required::after {
+  content: ':';
+  position: relative;
+  top: -0.5px;
+  margin: 0 8px 0 2px;
+}
+.label-required::before {
+  display: inline-block;
+  margin-right: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: '*';
 }

@@ -1,9 +1,21 @@
+import moment from 'moment';
 import {eventActionTypes} from '../../action-types';
 
 const {SET_EVENTS} = eventActionTypes;
 
+const setInitEvents = () => {
+  let days = {};
+  for (let k = 1; k <= moment().daysInMonth(); k++) {
+    days = {
+      ...days,
+      [k]: [],
+    };
+  }
+  return days;
+};
+
 const initialState = {
-  events: [],
+  events: setInitEvents(),
 };
 
 const reducer = (state = initialState, action) => {

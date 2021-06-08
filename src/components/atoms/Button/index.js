@@ -3,7 +3,7 @@ import {Button, Dropdown, Menu} from 'antd';
 import {colors} from '../../../utilities';
 import {Link} from 'react-router-dom';
 import '../../../styles/button.css';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const CustomButton = ({
   type,
@@ -20,7 +20,7 @@ const CustomButton = ({
   isButtonDropdown,
   menuDropdown,
 }) => {
-  const {loadingButton} = useSelector((state) => state.loading)
+  const {loadingButton} = useSelector((state) => state.loading);
   const renderType = (type, disabled) => {
     if (!disabled) {
       switch (type) {
@@ -72,6 +72,15 @@ const CustomButton = ({
             color: colors.white,
             borderRadius: rounded ? 20 : 5,
             fontWeight: 700,
+          };
+        case 'secondary-outlined':
+          return {
+            backgroundColor: colors.white,
+            borderColor: colors.secondary,
+            borderWidth: 1,
+            color: colors.secondary,
+            fontWeight: 700,
+            borderRadius: rounded ? 20 : 5,
           };
         default:
           return {
@@ -137,8 +146,7 @@ const CustomButton = ({
       style={renderType(type, disabled)}
       htmlType={htmlType}
       block={block}
-      loading={loading !== undefined ? loading : loadingButton}
-      >
+      loading={loading !== undefined ? loading : loadingButton}>
       {text}
     </Button>
   );
