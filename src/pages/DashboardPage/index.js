@@ -31,9 +31,12 @@ const DashboardPage = () => {
       if (events[selectedDate].length < 3) {
         const event = [
           ...events[selectedDate],
-          {...values, color: randomColor({
-            luminosity: 'light'
-          })},
+          {
+            ...values,
+            color: randomColor({
+              luminosity: 'light',
+            }),
+          },
         ];
         const request = {
           ...events,
@@ -48,7 +51,7 @@ const DashboardPage = () => {
     } else {
       const event = events[selectedDate].map((item, index) => {
         if (index === selectedEvent.id) {
-          return {...values};
+          return {...values, color: selectedEvent.color};
         } else {
           return {...item};
         }
