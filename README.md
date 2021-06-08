@@ -2,7 +2,7 @@
 
 ![Web Screenshot](./screenshot_web.png)
 
-This is a personal calendar website application created using ReactJS You can schedule your events on this current month with this application. You can check it out here: [**https://personal-calendar.fatanaminullah.com**](https://fatanaminullah.com)
+This is a personal calendar website application created using ReactJS. You can schedule your events this month with this application. You can check it out here: [**https://personal-calendar.fatanaminullah.com**](https://personal-calendar.fatanaminullah.com)
 
 ## Run Project
 
